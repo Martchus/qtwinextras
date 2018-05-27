@@ -6,6 +6,7 @@ DEFINES += QT_NO_FOREACH
 
 SOURCES += \
     qwinfunctions.cpp \
+    qwinfunctions_p.cpp \
     qwintaskbarbutton.cpp \
     qwintaskbarprogress.cpp \
     windowsguidsdefs.cpp \
