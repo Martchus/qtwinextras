@@ -38,13 +38,6 @@
 **
 ****************************************************************************/
 
-#if defined(NTDDI_VERSION) && NTDDI_VERSION < 0x06010000 // NTDDI_WIN7
-#  undef NTDDI_VERSION
-#endif
-#if !defined(NTDDI_VERSION)
-#  define NTDDI_VERSION 0x06010000 // Enable functions for MinGW
-#endif
-
 #include "qwinfunctions.h"
 #include "qwinfunctions_p.h"
 #include "qwineventfilter_p.h"
@@ -1819,8 +1812,11 @@ bool QtWin::isCompositionOpaque()
  */
 void QtWin::setCurrentProcessExplicitAppUserModelID(const QString &id)
 {
-    QScopedArrayPointer<wchar_t> wid(qt_qstringToNullTerminated(id));
-    SetCurrentProcessExplicitAppUserModelID(wid.data());
+    qtShell32Dll.init();
+    if (qtShell32Dll.setCurrentProcessExplicitAppUserModelID) {
+        QScopedArrayPointer<wchar_t> wid(qt_qstringToNullTerminated(id));
+        qtShell32Dll.setCurrentProcessExplicitAppUserModelID(wid.data());
+    }
 }
 
 /*!
